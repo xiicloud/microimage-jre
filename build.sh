@@ -2,10 +2,10 @@
 
 set -e
 
-export CON_NAME=jdk_t
+export CON_NAME=jre_t
 export REG_URL=d.nicescale.com:5000
-export IMAGE=jdk
-export TAGS="7 7.85"
+export IMAGE=jre
+export TAGS="7 7.79"
 export BASE_IMAGE=microimages/alpine
 
 docker pull $REG_URL/$BASE_IMAGE

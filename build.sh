@@ -19,7 +19,7 @@ docker build -t $REG_URL/microimages/$IMAGE .
 echo "---> Starting push $REG_URL/microimages/$IMAGE:$VERSION"
 
 for t in $TAGS; do
-  docker tag $REG_URL/microimages/$IMAGE $REG_URL/microimages/$IMAGE:$t
+  docker tag -f $REG_URL/microimages/$IMAGE $REG_URL/microimages/$IMAGE:$t
 done
 
 docker push $REG_URL/microimages/$IMAGE

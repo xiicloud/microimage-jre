@@ -11,4 +11,3 @@ env JAVA_APK_VERSION 7.79.2.5.6-r0
 run apk add --update openjdk7-jre="$JAVA_APK_VERSION"
 
 workdir /app
-

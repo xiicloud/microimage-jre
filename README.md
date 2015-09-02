@@ -1,90 +1,39 @@
-# Supported tags and respective `Dockerfile` links
+![logo](https://csphere.cn/assets/46d0f3f5-19e1-4bf5-a903-93237ed5d032)
 
--	[`openjdk-6b36-jdk`, `openjdk-6b36`, `openjdk-6-jdk`, `openjdk-6`, `6b36-jdk`, `6b36`, `6-jdk`, `6` (*openjdk-6-jdk/Dockerfile*)](https://github.com/docker-library/java/blob/9859b8586dd2511d005c84694736e2121ceb11d7/openjdk-6-jdk/Dockerfile)
--	[`openjdk-6b36-jre`, `openjdk-6-jre`, `6b36-jre`, `6-jre` (*openjdk-6-jre/Dockerfile*)](https://github.com/docker-library/java/blob/9859b8586dd2511d005c84694736e2121ceb11d7/openjdk-6-jre/Dockerfile)
--	[`openjdk-7u79-jdk`, `openjdk-7u79`, `openjdk-7-jdk`, `openjdk-7`, `7u79-jdk`, `7u79`, `7-jdk`, `7` (*openjdk-7-jdk/Dockerfile*)](https://github.com/docker-library/java/blob/65f4567ed9294e7404b3d2d0c806249946e06210/openjdk-7-jdk/Dockerfile)
--	[`openjdk-7u79-jre`, `openjdk-7-jre`, `7u79-jre`, `7-jre` (*openjdk-7-jre/Dockerfile*)](https://github.com/docker-library/java/blob/65f4567ed9294e7404b3d2d0c806249946e06210/openjdk-7-jre/Dockerfile)
--	[`openjdk-8u66-jdk`, `openjdk-8u66`, `openjdk-8-jdk`, `openjdk-8`, `8u66-jdk`, `8u66`, `8-jdk`, `8`, `jdk`, `latest` (*openjdk-8-jdk/Dockerfile*)](https://github.com/docker-library/java/blob/6f340724d3bc1f9b4385975c5de6bfe15aac8c85/openjdk-8-jdk/Dockerfile)
--	[`openjdk-8u66-jre`, `openjdk-8-jre`, `8u66-jre`, `8-jre`, `jre` (*openjdk-8-jre/Dockerfile*)](https://github.com/docker-library/java/blob/0f82de10e4aaa8b78d7f79cf725fd1fad1dc85e0/openjdk-8-jre/Dockerfile)
+## 启动一个Java实例
 
-For more information about this image and its history, please see the [relevant manifest file (`library/java`)](https://github.com/docker-library/official-images/blob/master/library/java) in the [`docker-library/official-images` GitHub repo](https://github.com/docker-library/official-images).
-
-# What is Java?
-
-Java is a concurrent, class-based, object-oriented language specifically designed to have as few implementation dependencies as possible. It is intended to allow application developers to "write once, run anywhere", meaning that code that runs on one platform does not need to be recompiled to run on another.
-
-Java is a registered trademark of Oracle and/or its affiliates.
-
-> [wikipedia.org/wiki/Java_(programming_language)](http://en.wikipedia.org/wiki/Java_%28programming_language%29)
-
-![logo](https://raw.githubusercontent.com/docker-library/docs/master/java/logo.png)
-
-# How to use this image
-
-## Start a Java instance in your app
-
-The most straightforward way to use this image is to use a Java container as both the build and runtime environment. In your `Dockerfile`, writing something along the lines of the following will compile and run your project:
+使用JDK镜像最直接的方法是将其看作Java容器的build和运行时环境。你可以像下面这样编写一个Dockerfile:
 
 ```dockerfile
-FROM java:7
-COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp
+FROM index.csphere.cn/microimages/jdk:7
+COPY . /app
+WORKDIR /app
 RUN javac Main.java
 CMD ["java", "Main"]
 ```
 
-You can then run and build the Docker image:
+然后可以构建并运行:
 
 ```console
 $ docker build -t my-java-app .
 $ docker run -it --rm --name my-running-app my-java-app
 ```
 
-## Compile your app inside the Docker container
+## 在容器里编译应用
 
-There may be occasions where it is not appropriate to run your app inside a container. To compile, but not run your app inside the Docker instance, you can write something like:
+有时你的应用也许不适合运行在容器里，但是却适合在容器里编译:
 
 ```console
-$ docker run --rm -v "$PWD":/usr/src/myapp -w /usr/src/myapp java:7 javac Main.java
+$ docker run --rm -v "$PWD":/app -w /app java:7 javac Main.java
 ```
 
-This will add your current directory as a volume to the container, set the working directory to the volume, and run the command `javac Main.java` which will tell Java to compile the code in `Main.java` and output the Java class file to `Main.class`.
+这将会把你的当前目录 `PWD` 当作一个volume卷挂载到容器里，设置workdir到volume卷，并运行 `javac Main.java` 来编译生成 `Main.class` 。
 
-# Why is this only OpenJDK/OpenJRE?
+## 授权和法律
 
-As all of the major upstream Linux distributions are unwilling to redistribute Oracle Java in their own distribution channels, we have chosen to follow them. See references below on how each distribution does not distribute Oracle Java.
+该镜像由希云制造，未经允许，任何第三方企业和个人，不得重新分发。违者必究。
 
--	Ubuntu stopped distributing it in the `sun-java6` package when Oracle retired the "Operating System Distributor License for Java" ([lists.ubuntu.com](https://lists.ubuntu.com/archives/ubuntu-security-announce/2011-December/001528.html)).
--	Debian requires users to download the Java tar manually from oracle.com and then use `java-package` to install it ([wiki.debian.net](https://wiki.debian.org/Java/Sun)).
--	The webupd8 PPA for Ubuntu and Debian requires the user to accept the Oracle license in order for their software to download and install Oracle java ([webupd8.org](http://www.webupd8.org/2012/09/install-oracle-java-8-in-ubuntu-via-ppa.html)).
--	Gentoo has a *fetch-restriction* that requires the user to go to the Oracle website to download the Java tar manually which inclues accepting the license ([wiki.gentoo.org](https://wiki.gentoo.org/wiki/Java)).
--	CentOS requires users to go and download the rpm provided by Oracle at java.com and thus accept the Oracle license ([wiki.centos.org](https://wiki.centos.org/HowTos/JavaRuntimeEnvironment)).
--	RedHat provides instructions to add a repo that is maintained by Oracle ([access.redhat.com](https://access.redhat.com/solutions/732883)).
+## 支持和反馈
 
-# License
+该镜像由希云为企业客户提供技术支持和保障，任何问题都可以直接反馈到: `docker@csphere.cn`
 
-View [license information](http://openjdk.java.net/legal/gplv2+ce.html) for the software contained in this image.
-
-# Supported Docker versions
-
-This image is officially supported on Docker version 1.8.1.
-
-Support for older versions (down to 1.0) is provided on a best-effort basis.
-
-# User Feedback
-
-## Documentation
-
-Documentation for this image is stored in the [`java/` directory](https://github.com/docker-library/docs/tree/master/java) of the [`docker-library/docs` GitHub repo](https://github.com/docker-library/docs). Be sure to familiarize yourself with the [repository's `README.md` file](https://github.com/docker-library/docs/blob/master/README.md) before attempting a pull request.
-
-## Issues
-
-If you have any problems with or questions about this image, please contact us through a [GitHub issue](https://github.com/docker-library/java/issues).
-
-You can also reach many of the official image maintainers via the `#docker-library` IRC channel on [Freenode](https://freenode.net).
-
-## Contributing
-
-You are invited to contribute new features, fixes, or updates, large or small; we are always thrilled to receive pull requests, and do our best to process them as fast as we can.
-
-Before you start to code, we recommend discussing your plans through a [GitHub issue](https://github.com/docker-library/java/issues), especially for more ambitious contributions. This gives other contributors a chance to point you in the right direction, give you feedback on your design, and help you find out if someone else is working on the same thing.

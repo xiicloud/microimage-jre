@@ -1,4 +1,4 @@
-![logo](https://csphere.cn/assets/46d0f3f5-19e1-4bf5-a903-93237ed5d032)
+![jre](https://csphere.cn/assets/e8e58fe7-1b3a-45df-8cb2-0387250938ff)
 
 ## 启动一个Java实例
 

@@ -5,7 +5,7 @@ set -e
 export CON_NAME=jre_t
 export REG_URL=d.nicescale.com:5000
 export IMAGE=jre
-export TAGS="7 7.79"
+export TAGS="7 7.91"
 export BASE_IMAGE=microimages/alpine
 
 docker pull $BASE_IMAGE
